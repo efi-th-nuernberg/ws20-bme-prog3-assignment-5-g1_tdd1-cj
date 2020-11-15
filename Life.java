@@ -1,5 +1,7 @@
 public class Life implements ILife {
   
+  boolean [][] raster = new boolean [5][5]; 
+
   public static void main(String[] args) {
     Life l = new Life(new String[] {  "     ",
                                       "     ",
@@ -9,13 +11,13 @@ public class Life implements ILife {
     l = (Life) l.nextGeneration();
   }
 
-
   public Life() {
     nukeAll();
   }
 
   public Life(String[] setup) {
     this();
+    
     for (int y = 0; y < setup.length; y++)
       for (int x = 0; x < setup[y].length(); x++)
         if (setup[y].charAt(x) != ' ')
@@ -23,31 +25,26 @@ public class Life implements ILife {
   }
 
 
-  @Override
   public void nukeAll() {
-    // TODO Auto-generated method stub
-
+    for (int i = 0; i< raster.length; i++){
+      for (int j = 0; j < raster[i].length; j++){
+        raster[i][j]= false;
+      }
+    }
   }
 
-  @Override
   public void setAlive(int x, int y) {
-    // TODO Auto-generated method stub
-
+    raster[x][y] = true;
   }
 
-  @Override
   public void setDead(int x, int y) {
-    // TODO Auto-generated method stub
-
+    raster[x][y] = false;
   }
 
-  @Override
   public boolean isAlive(int x, int y) {
-    // TODO Auto-generated method stub
-    return false;
+    return raster[x][y];
   }
 
-  @Override
   public ILife nextGeneration() {
     // TODO Auto-generated method stub
     return null;
