@@ -79,7 +79,10 @@ public class Life implements ILife {
     return l;
   }
 
+<<<<<<< HEAD
   /*Methode zum testen ob es funktioniert/Debugging
+=======
+>>>>>>> ca7ecb748aac96aa5f21fbe431a5d89029866e5c
   public void print(boolean [][] r)
   {
     for (int i = 0; i< r.length; i++){
@@ -87,7 +90,11 @@ public class Life implements ILife {
         System.out.println(""+r[i][j]);
       }
     }
+<<<<<<< HEAD
   }*/
+=======
+  }
+>>>>>>> ca7ecb748aac96aa5f21fbe431a5d89029866e5c
 
   public int checkNeighbours(int i, int j) {
     int neighbours = 0;
