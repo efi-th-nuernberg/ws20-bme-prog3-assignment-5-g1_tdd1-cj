@@ -1,14 +1,15 @@
 public class Life implements ILife {
   
+  public boolean [][] raster = new boolean [5][5]; 
+
   public static void main(String[] args) {
-    Life l = new Life(new String[] {  "     ",
+    Life l = new Life(new String[] {  "***  ",
                                       "     ",
-                                      " *** ",
+                                      "     ",
                                       "     ",
                                       "     " });
     l = (Life) l.nextGeneration();
   }
-
 
   public Life() {
     nukeAll();
@@ -16,40 +17,96 @@ public class Life implements ILife {
 
   public Life(String[] setup) {
     this();
-    for (int y = 0; y < setup.length; y++)
-      for (int x = 0; x < setup[y].length(); x++)
-        if (setup[y].charAt(x) != ' ')
+    
+    for (int x = 0; x < setup.length; x++)
+      for (int y = 0; y < setup[x].length();y++)
+        if (setup[x].charAt(y) != ' ')
           setAlive(x, y);
+
+    //print(raster);
   }
 
-
-  @Override
   public void nukeAll() {
-    // TODO Auto-generated method stub
-
+    for (int i = 0; i< raster.length; i++){
+      for (int j = 0; j < raster[i].length; j++){
+        raster[i][j]= false;
+      }
+    }
   }
 
-  @Override
   public void setAlive(int x, int y) {
-    // TODO Auto-generated method stub
-
+    raster[x][y] = true;
   }
 
-  @Override
   public void setDead(int x, int y) {
-    // TODO Auto-generated method stub
-
+    raster[x][y] = false;
   }
 
-  @Override
   public boolean isAlive(int x, int y) {
-    // TODO Auto-generated method stub
+  // Verhindern von null Pointer Exception
+  if (x >= 0 && x < raster.length){
+    if (y >= 0 && y < raster[x].length){
+      return raster[x][y];
+    }
+  }
+    //Außerhalb des Rasters = tot
     return false;
   }
 
-  @Override
   public ILife nextGeneration() {
-    // TODO Auto-generated method stub
-    return null;
+    Life l = new Life();
+    for (int i = 0; i< raster.length; i++){
+      for (int j = 0; j< raster[i].length; j++){
+        int neighbours = checkNeighbours(i,j);
+        if (neighbours < 2 || neighbours > 3){
+          l.setDead(i,j);
+        } else {
+          l.setAlive(i,j);
+          if (neighbours == 3){
+            l.setAlive(i,j);
+          } else {
+            boolean lastGeneration = isAlive(i,j);
+            if (lastGeneration){
+              l.setAlive(i,j);
+            } else {
+              l.setDead(i,j);
+            }
+          }
+        }
+      }
+    }
+    return l;
+  }
+
+  /*Methode zum testen ob es funktioniert/Debugging
+  public void print(boolean [][] r)
+  {
+    for (int i = 0; i< r.length; i++){
+      for (int j = 0; j< r[i].length; j++){
+        System.out.println(""+r[i][j]);
+      }
+    }
+  }*/
+
+  public int checkNeighbours(int i, int j) {
+    int neighbours = 0;
+
+    //oben
+    if (isAlive(i-1,j)) neighbours++;
+    //unten
+    if (isAlive(i+1,j)) neighbours++;
+    // rechts
+    if (isAlive(i,j+1)) neighbours++;
+    // links
+    if (isAlive(i,j-1)) neighbours++;
+    // links oben
+    if (isAlive(i-1,j-1)) neighbours++;
+    // links unten
+    if (isAlive(i+1,j-1)) neighbours++;
+    // rechts oben
+    if (isAlive(i-1,j+1)) neighbours++;
+    // rechts unten
+    if (isAlive(i+1,j+1)) neighbours++;
+    return neighbours;
   }
 }
